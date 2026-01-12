@@ -1,25 +1,24 @@
 import { auth } from "@/src/firebase/firebaseConfig";
 import { router } from "expo-router";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Button, Text, TextInput, View } from "react-native";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onLogin = async () => {
+  const onRegister = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), password);
-      router.replace("/");
+      await createUserWithEmailAndPassword(auth, email.trim(), password);
     } catch (e: any) {
-      console.log("Login failed", e.message);
+      console.log("Register failed", e.message);
     }
   };
 
   return (
     <View style={{ padding: 16, gap: 12 }}>
-      <Text style={{ fontSize: 24, fontWeight: "600" }}>Login Screen</Text>
+      <Text style={{ fontSize: 24, fontWeight: "600" }}>Create account</Text>
 
       <TextInput
         placeholder="Email"
@@ -37,11 +36,8 @@ export default function LoginScreen() {
         style={{ borderWidth: 1, padding: 12, borderRadius: 8 }}
       />
 
-      <Button title="Log in" onPress={onLogin} />
-      <Button
-        title="Create an account"
-        onPress={() => router.push("/(auth)/register")}
-      />
+      <Button title="Create account" onPress={onRegister} />
+      <Button title="Back to login" onPress={() => router.back()} />
     </View>
   );
 }
