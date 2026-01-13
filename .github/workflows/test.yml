@@ -3,12 +3,28 @@ name: Automated Tests
 on:
   pull_request:
     branches:
-      - 'main'
+      - "main"
 
 jobs:
-  tests:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test Step
-        run: echo "Github Actions Test"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+        if: ${{ hashFiles('**/.eslintrc*', '**/eslint.config.*') != '' }}
+
+      - name: Test
+        run: npm run test:ci
