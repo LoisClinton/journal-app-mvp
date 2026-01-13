@@ -1,0 +1,14 @@
+name: Automated Tests
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test Step
+        run: echo "Github Actions Test"
