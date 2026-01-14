@@ -48,3 +48,32 @@ jest.mock("firebase/firestore", () => ({
   deleteDoc: jest.fn(),
   serverTimestamp: jest.fn(() => new Date()),
 }));
+
+// --- expo-router mocks for more complex behavior ---
+jest.mock("expo-router", () => {
+  const React = require("react");
+
+  return {
+    router: {
+      replace: jest.fn(),
+      push: jest.fn(),
+      back: jest.fn(),
+    },
+    Stack: ({ children }) => children ?? null,
+
+    // Runs the focus callback after mount (once), which stops the re-render loop
+    useFocusEffect: (cb) => {
+      React.useEffect(() => {
+        const cleanup = cb();
+        return typeof cleanup === "function" ? cleanup : undefined;
+      }, []);
+    },
+
+    // default; override in tests when needed
+    useLocalSearchParams: jest.fn(() => ({})),
+  };
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
