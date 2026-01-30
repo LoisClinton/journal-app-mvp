@@ -1,8 +1,9 @@
+import Button from "@/components/Button";
 import { auth } from "@/src/firebase/firebaseConfig";
 import { router } from "expo-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState("");

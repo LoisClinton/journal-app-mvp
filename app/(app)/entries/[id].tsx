@@ -1,6 +1,7 @@
+import Button from "@/components/Button";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, Button, Text, TextInput, View } from "react-native";
+import { Alert, Text, TextInput, View } from "react-native";
 import { auth } from "../../../src/firebase/firebaseConfig";
 import {
   getEntry,
@@ -72,7 +73,12 @@ export default function EditEntryScreen() {
         }}
       />
       <Button title="Save changes" onPress={onSave} />
-      <Button title="Delete" onPress={onDelete} color="red" />
+      <Button
+        title="Delete"
+        onPress={onDelete}
+        color="#d9534f"
+        clickedColor="#c9302c"
+      />
     </View>
   );
 }

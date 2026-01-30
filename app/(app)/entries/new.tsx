@@ -1,6 +1,7 @@
+import Button from "@/components/Button";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Alert, Button, TextInput, View } from "react-native";
+import { Alert, TextInput, View } from "react-native";
 import { auth } from "../../../src/firebase/firebaseConfig";
 import { createEntry } from "../../../src/services/journalService";
 
