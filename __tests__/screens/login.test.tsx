@@ -17,7 +17,6 @@ describe("Login screen", () => {
 
     await waitFor(() => {
       expect(signInWithEmailAndPassword).toHaveBeenCalled();
-      // checks trimming + args shape
       const [_authArg, emailArg, passArg] = (
         signInWithEmailAndPassword as jest.Mock
       ).mock.calls[0];

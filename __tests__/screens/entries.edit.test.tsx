@@ -30,15 +30,13 @@ describe("Edit entry screen", () => {
 
     const { getByPlaceholderText, queryByText } = render(<EditEntryScreen />);
 
-    // wait for the loading text to disappear
-    await waitFor(() => expect(queryByText("Loading…")).toBeNull()); // note the ellipsis char
+    await waitFor(() => expect(queryByText("Loading…")).toBeNull());
 
-    // assert the TextInput values via props
     expect(getByPlaceholderText("Title").props.value).toBe("Loaded title");
     expect(getByPlaceholderText("Write something…").props.value).toBe(
       "Loaded content"
     );
 
     expect(getEntry).toHaveBeenCalledWith("uid-123", "e1");
-  });
+  }); 
 });
