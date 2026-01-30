@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   addDoc,
   collection,
@@ -21,21 +22,41 @@ export type JournalEntry = {
   updatedAt?: any;
 };
 
-export async function listEntries(uid: string): Promise<JournalEntry[]> {
-  const q = query(collection(db, "entries"), where("userId", "==", uid));
-  const snap = await getDocs(q);
+const cacheKey = (uid: string) => `entries:${uid}`;
 
-  const entries = snap.docs.map((d) => ({
-    id: d.id,
-    ...(d.data() as any),
-  })) as JournalEntry[];
-  return entries;
+export async function listEntries(uid: string): Promise<JournalEntry[]> {
+  const cached = await AsyncStorage.getItem(cacheKey(uid));
+  const cachedEntries = cached ? (JSON.parse(cached) as JournalEntry[]) : [];
+  try {
+    const q = query(collection(db, "entries"), where("userId", "==", uid));
+    const snap = await getDocs(q);
+
+    const entries = snap.docs.map((d) => ({
+      id: d.id,
+      ...(d.data() as any),
+    })) as JournalEntry[];
+    await AsyncStorage.setItem(cacheKey(uid), JSON.stringify(entries));
+    return entries;
+  } catch (error) {
+    console.error(
+      "Error fetching entries from Firestore, returning cached entries:",
+      error,
+    );
+    return cachedEntries;
+  }
 }
 
 export async function getEntry(
   uid: string,
-  id: string
+  id: string,
 ): Promise<JournalEntry | null> {
+  // cache first (for offline read)
+  const cached = await AsyncStorage.getItem(cacheKey(uid));
+  const cachedEntries = cached ? (JSON.parse(cached) as JournalEntry[]) : [];
+  const cachedEntry = cachedEntries.find((e) => e.id === id);
+  if (cachedEntry) return cachedEntry;
+
+  // then Firestore
   const ref = doc(db, "entries", id);
   const snap = await getDoc(ref);
   if (!snap.exists()) return null;
