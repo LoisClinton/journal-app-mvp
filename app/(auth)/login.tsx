@@ -7,13 +7,15 @@ import { Button, Text, TextInput, View } from "react-native";
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const onLogin = async () => {
+    setError(null);
     try {
       await signInWithEmailAndPassword(auth, email.trim(), password);
       router.replace("/");
     } catch (e: any) {
-      console.log("Login failed", e.message);
+      setError(e?.message ?? "Login failed");
     }
   };
 
@@ -36,6 +38,8 @@ export default function LoginScreen() {
         onChangeText={setPassword}
         style={{ borderWidth: 1, padding: 12, borderRadius: 8 }}
       />
+
+      {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
 
       <Button title="Log in" onPress={onLogin} />
       <Button

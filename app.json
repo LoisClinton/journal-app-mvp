@@ -43,6 +43,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5b301638-5789-446a-9003-12738c546ef0"
+      }
+    },
+    "owner": "loisclintons-organization"
   }
 }

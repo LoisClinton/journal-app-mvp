@@ -7,12 +7,19 @@ import { Button, Text, TextInput, View } from "react-native";
 export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const onRegister = async () => {
+    setError(null);
+    setSuccess(null);
     try {
       await createUserWithEmailAndPassword(auth, email.trim(), password);
+      setSuccess(
+        "Account created successfully! Return to login screen and log in to your account.",
+      );
     } catch (e: any) {
-      console.log("Register failed", e.message);
+      setError(e?.message ?? "Login failed");
     }
   };
 
@@ -35,6 +42,9 @@ export default function RegisterScreen() {
         onChangeText={setPassword}
         style={{ borderWidth: 1, padding: 12, borderRadius: 8 }}
       />
+
+      {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+      {success ? <Text style={{ color: "green" }}>{success}</Text> : null}
 
       <Button title="Create account" onPress={onRegister} />
       <Button title="Back to login" onPress={() => router.back()} />
