@@ -7,7 +7,7 @@ import Index from "../../app/index";
 describe("AuthGate (app/index.tsx)", () => {
   test("redirects to /(app)/entries when user exists", async () => {
     (onAuthStateChanged as jest.Mock).mockImplementation((_auth, cb) => {
-      cb({ uid: "123" }); // user is signed in
+      cb({ uid: "123" });
       return () => {};
     });
 
@@ -20,7 +20,7 @@ describe("AuthGate (app/index.tsx)", () => {
 
   test("redirects to /(auth)/login when user is null", async () => {
     (onAuthStateChanged as jest.Mock).mockImplementation((_auth, cb) => {
-      cb(null); // signed out
+      cb(null);
       return () => {};
     });
 
