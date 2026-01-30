@@ -12,6 +12,7 @@ export default function JournalListScreen() {
   const uid = auth.currentUser?.uid!;
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -23,7 +24,7 @@ export default function JournalListScreen() {
   useFocusEffect(
     useCallback(() => {
       load();
-    }, [])
+    }, []),
   );
 
   return (
@@ -38,12 +39,20 @@ export default function JournalListScreen() {
         <Button title="Add" onPress={() => router.push("/(app)/entries/new")} />
         <Button
           title="Logout"
-          onPress={() => {
-            signOut(auth);
-            router.replace("/");
+          onPress={async () => {
+            setError(null);
+            try {
+              await signOut(auth);
+              router.replace("/");
+            } catch (error) {
+              console.log("Error signing out: ", error);
+              setError("Failed to sign out. Please try again.");
+            }
           }}
         />
       </View>
+
+      {error && <Text style={{ color: "red" }}>{error}</Text>}
 
       {loading ? (
         <Text>Loading…</Text>
