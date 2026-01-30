@@ -1,8 +1,9 @@
+import Button from "@/components/Button";
 import { auth } from "@/src/firebase/firebaseConfig";
 import { router } from "expo-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -40,7 +41,6 @@ export default function LoginScreen() {
       />
 
       {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
-
       <Button title="Log in" onPress={onLogin} />
       <Button
         title="Create an account"
