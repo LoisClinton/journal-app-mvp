@@ -1,7 +1,8 @@
+import Button from "@/components/Button";
 import { router, useFocusEffect } from "expo-router";
 import { signOut } from "firebase/auth";
 import { useCallback, useState } from "react";
-import { Button, FlatList, Pressable, Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 import { auth } from "../../../src/firebase/firebaseConfig";
 import {
   JournalEntry,
